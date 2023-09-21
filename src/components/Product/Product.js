@@ -14,7 +14,20 @@ const Product = ({ title, name, basePrice, colors, sizes }) => {
 		];
 	};
 
-	console.log(currentColor, currentSize);
+	const updateSize = e => {
+		setCurrentSize(e.target.dataset.size);
+	};
+
+	const updateColor = e => {
+		setCurrentColor(e.target.dataset.color);
+	};
+
+	const getPrice = () => {
+		const matchSize = sizes.find(el => el.name === currentSize);
+		const extraPrice = matchSize.additionalPrice;
+
+		return basePrice + extraPrice;
+	};
 
 	return (
 		<article className={styles.product}>
@@ -28,7 +41,7 @@ const Product = ({ title, name, basePrice, colors, sizes }) => {
 			<div>
 				<header>
 					<h2 className={styles.name}>{title}</h2>
-					<span className={styles.price}>Price: {basePrice}$</span>
+					<span className={styles.price}>Price: {getPrice()}$</span>
 				</header>
 				<form>
 					<div className={styles.sizes}>
@@ -39,7 +52,9 @@ const Product = ({ title, name, basePrice, colors, sizes }) => {
 									<li key={size.name}>
 										<button
 											type="button"
-											className={size.name === currentSize && styles.active}>
+											data-size={size.name}
+											className={size.name === currentSize && styles.active}
+											onClick={updateSize}>
 											{size.name}
 										</button>
 									</li>
@@ -55,10 +70,12 @@ const Product = ({ title, name, basePrice, colors, sizes }) => {
 									<li key={item}>
 										<button
 											type="button"
+											data-color={item}
 											className={clsx(
 												prepareColorClassName(item),
 												item === currentColor && styles.active
 											)}
+											onClick={updateColor}
 										/>
 									</li>
 								);
