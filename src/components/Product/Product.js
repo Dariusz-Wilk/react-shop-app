@@ -29,6 +29,24 @@ const Product = ({ title, name, basePrice, colors, sizes }) => {
 		return basePrice + extraPrice;
 	};
 
+	const getSummary = e => {
+		e.preventDefault();
+		const summaryObj = {
+			name: title,
+			price: getPrice(),
+			size: currentSize,
+			color: currentColor,
+		};
+
+		console.log(summaryObj);
+		console.log(`Summary`);
+		console.log(`=================`);
+		console.log(`Name: `, summaryObj.name);
+		console.log(`Price: `, summaryObj.price);
+		console.log(`Size: `, summaryObj.size);
+		console.log(`Color: `, summaryObj.color);
+	};
+
 	return (
 		<article className={styles.product}>
 			<div className={styles.imageContainer}>
@@ -53,7 +71,9 @@ const Product = ({ title, name, basePrice, colors, sizes }) => {
 										<button
 											type="button"
 											data-size={size.name}
-											className={size.name === currentSize && styles.active}
+											className={clsx(
+												size.name === currentSize && styles.active
+											)}
 											onClick={updateSize}>
 											{size.name}
 										</button>
@@ -82,7 +102,7 @@ const Product = ({ title, name, basePrice, colors, sizes }) => {
 							})}
 						</ul>
 					</div>
-					<Button className={styles.button}>
+					<Button className={styles.button} onClick={getSummary}>
 						<span className="fa fa-shopping-cart" />
 					</Button>
 				</form>
