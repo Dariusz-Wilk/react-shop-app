@@ -2,7 +2,7 @@ import styles from './Product.module.scss';
 import ProductForm from '../ProductForm/ProductForm';
 import ProductImage from '../ProductImage/ProductImage';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 const Product = ({ title, name, basePrice, colors, sizes }) => {
 	const [currentColor, setCurrentColor] = useState(colors[0]);
@@ -16,18 +16,17 @@ const Product = ({ title, name, basePrice, colors, sizes }) => {
 		setCurrentColor(e.target.dataset.color);
 	};
 
-	const getPrice = () => {
+	const price = useMemo(() => {
 		const matchSize = sizes.find(el => el.name === currentSize);
 		const extraPrice = matchSize.additionalPrice;
-
 		return basePrice + extraPrice;
-	};
+	}, [currentSize, basePrice, sizes]);
 
 	const getSummary = e => {
 		e.preventDefault();
 		const summaryObj = {
 			name: title,
-			price: getPrice(),
+			price: price,
 			size: currentSize,
 			color: currentColor,
 		};
@@ -47,7 +46,7 @@ const Product = ({ title, name, basePrice, colors, sizes }) => {
 			<div>
 				<header>
 					<h2 className={styles.name}>{title}</h2>
-					<span className={styles.price}>Price: {getPrice()}$</span>
+					<span className={styles.price}>Price: {price}$</span>
 				</header>
 				<ProductForm
 					sizes={sizes}

@@ -8,6 +8,7 @@ const OptionColor = ({ colors, currentColor, updateColor }) => {
 			'color' + color[0].toUpperCase() + color.substr(1).toLowerCase()
 		];
 	};
+
 	return (
 		<div className={styles.colors}>
 			<h3 className={styles.optionLabel}>Colors</h3>
